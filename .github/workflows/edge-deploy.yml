@@ -51,15 +51,6 @@ jobs:
           pip install pytest ruff
 
 
-      - name: Download modelo para testes
-        run: |
-          pip install "dvc[ssh]"
-          mkdir -p ~/.ssh
-          echo "${{ secrets.RPI_SSH_KEY }}" | tr -d '\r' > ~/.ssh/dvc_key
-          chmod 600 ~/.ssh/dvc_key
-          dvc remote modify --local local_remote keyfile ~/.ssh/dvc_key
-          dvc pull
-
       - name: Testar chave SSH
         run: |
           mkdir -p ~/.ssh
@@ -68,6 +59,15 @@ jobs:
           ssh-keygen -y -f ~/.ssh/dvc_key > /tmp/dvc_public_key
           echo "Chave privada válida para OpenSSH."
 
+
+      - name: Download modelo para testes
+        run: |
+          pip install "dvc[ssh]"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.RPI_SSH_KEY }}" | tr -d '\r' > ~/.ssh/dvc_key
+          chmod 600 ~/.ssh/dvc_key
+          dvc remote modify --local local_remote keyfile ~/.ssh/dvc_key
+          dvc pull
 
       - name: Disponibiliza o modelo em /app/models (mesmo path usado no Docker)
         run: |
