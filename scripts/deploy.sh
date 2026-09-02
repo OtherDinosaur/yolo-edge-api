@@ -1,3 +1,8 @@
+echo "[1/4] Baixando nova imagem..."
+docker compose pull
+python3 -m dvc pull models/yolo-epi.pt
+echo "[2/4] Iniciando nova versão..."
+docker compose up -d --build
 #!/bin/bash
 # scripts/deploy.sh
 # Executa no Raspberry Pi via SSH pelo pipeline de CI/CD.
